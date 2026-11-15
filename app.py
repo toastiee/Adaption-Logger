@@ -70,6 +70,24 @@ def add():
         return redirect(url_for("index"))
     return render_template("add.html")
 
+@app.route("/change/<int:change_id>")
+def detail(change_id):
+    change = get_db().execute(
+        "SELECT * FROM changes WHERE id = ?", (change_id,)
+    ).fetchone()
+    if change is None:
+        return "Change not found", 404
+    return render_template("detail.html", c=change)
+
+
+@app.route("/change/<int:change_id>/toggle-revert", methods=["POST"])
+def toggle_revert(change_id):
+    db = get_db()
+    db.execute(
+        "UPDATE changes SET reverted = 1 - reverted WHERE id = ?", (change_id,)
+    )
+    db.commit()
+    return redirect(url_for("detail", change_id=change_id))
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
