@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Add a change</h1>
+<form method="post">
+  <label>Car
+    <select name="car">
+      <option>MK8 GTI</option>
+      <option>MK7 GTI Clubsport</option>
+    </select>
+  </label>
+  <label>Control unit <input name="control_unit" placeholder="09 Central Electrics" required></label>
+  <label>Channel <input name="channel" placeholder="Lichtfunktion E 2" required></label>
+  <label>Old value <input name="old_value"></label>
+  <label>New value <input name="new_value"></label>
+  <label>Method
+    <select name="method">
+      <option>Manual adaptation</option>
+      <option>One-Click App</option>
+      <option>Long coding</option>
+    </select>
+  </label>
+  <label>Date <input type="date" name="date" required></label>
+  <label>Notes <textarea name="notes" rows="3"></textarea></label>
+  <p><button type="submit">Save</button></p>
+</form>
+{% endblock %}

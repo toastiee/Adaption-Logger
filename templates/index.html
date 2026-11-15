@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Coding changes</h1>
+{% if changes %}
+<table>
+  <tr><th>Date</th><th>Car</th><th>Module</th><th>Channel</th><th>Old → New</th></tr>
+  {% for c in changes %}
+  <tr>
+    <td>{{ c.date }}</td>
+    <td>{{ c.car }}</td>
+    <td>{{ c.control_unit }}</td>
+    <td>{{ c.channel }}</td>
+    <td>{{ c.old_value }} → {{ c.new_value }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>No changes logged yet.</p>
+{% endif %}
+{% endblock %}
