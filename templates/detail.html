@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ c.channel }}</h1>
+<p><strong>{{ c.car }}</strong> · {{ c.control_unit }} · {{ c.date }}</p>
+
+<table>
+  <tr><th>Old value</th><td>{{ c.old_value }}</td></tr>
+  <tr><th>New value</th><td>{{ c.new_value }}</td></tr>
+  <tr><th>Method</th><td>{{ c.method }}</td></tr>
+  <tr><th>Status</th><td>{{ "Reverted" if c.reverted else "Active" }}</td></tr>
+</table>
+
+{% if c.notes %}<h3>Notes</h3><p>{{ c.notes }}</p>{% endif %}
+
+<form method="post" action="{{ url_for('toggle_revert', change_id=c.id) }}">
+  <button type="submit">
+    {{ "Mark as active again" if c.reverted else "Mark as reverted" }}
+  </button>
+</form>
+{% endblock %}
