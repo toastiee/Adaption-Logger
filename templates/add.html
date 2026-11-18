@@ -2,25 +2,75 @@
 {% block content %}
 <h1>Add a change</h1>
 <form method="post">
-  <label>Car
+    <label>Car
     <select name="car">
-      <option>MK8 GTI</option>
-      <option>MK7 GTI Clubsport</option>
+        <option>MK8 GTI</option>
+        <option>MK7 GTI Clubsport</option>
     </select>
-  </label>
-  <label>Control unit <input name="control_unit" placeholder="09 Central Electrics" required></label>
-  <label>Channel <input name="channel" placeholder="Lichtfunktion E 2" required></label>
-  <label>Old value <input name="old_value"></label>
-  <label>New value <input name="new_value"></label>
-  <label>Method
+    </label>
+    <label>Control unit
+        <input name="control_unit" list="control-units" placeholder="09 Central Electrics" required>
+    </label>
+    <datalist id="control-units">
+        {% for cu in control_units %}<option value="{{ cu }}">{% endfor %}
+    </datalist>
+
+    <label>Channel
+        <input name="channel" list="channel-options" placeholder="Pick a control unit first" required>
+    </label>
+    <p class="hint" id="channel-hint">Pick a control unit to see its channels.</p>
+    <datalist id="channel-options"></datalist>
+
+    <label>Old value <input name="old_value"></label>
+    <label>New value <input name="new_value"></label>
+    <label>Method
     <select name="method">
-      <option>Manual adaptation</option>
-      <option>One-Click App</option>
-      <option>Long coding</option>
+        <option>Manual adaptation</option>
+        <option>One-Click App</option>
+        <option>Long coding</option>
     </select>
-  </label>
-  <label>Date <input type="date" name="date" required></label>
-  <label>Notes <textarea name="notes" rows="3"></textarea></label>
-  <p><button type="submit">Save</button></p>
+    </label>
+
+    <label>Date <input type="date" name="date" required></label>
+    <label>Notes <textarea name="notes" rows="3"></textarea></label>
+    <p><button type="submit">Save</button></p>
 </form>
+<script>
+// When a control unit is chosen, load only that module's channels
+// (like opening a module's Adaptation list in OBD11).
+const unitInput = document.querySelector('[name="control_unit"]');
+const channelList = document.getElementById("channel-options");
+const channelHint = document.getElementById("channel-hint");
+const channelsUrl = "{{ url_for('channels', module='CODE') }}";
+let loadedCode = null;
+
+async function loadChannels() {
+    const code = unitInput.value.trim().split(" ")[0];
+    if (code === loadedCode) return;
+    loadedCode = code;
+    channelList.innerHTML = "";
+
+    if (!code) {
+        channelHint.textContent = "Pick a control unit to see its channels.";
+        return;
+    }
+
+    const response = await fetch(channelsUrl.replace("CODE", encodeURIComponent(code)));
+    const channels = await response.json();
+    if (code !== loadedCode) return;   // user changed module while loading
+
+    for (const ch of channels) {
+        const option = document.createElement("option");
+        option.value = ch.value;
+        option.textContent = ch.label || "";
+        channelList.appendChild(option);
+    }
+    channelHint.textContent = channels.length
+        ? `${channels.length} channels for ${unitInput.value} - start typing to filter.`
+        : `No channels saved for ${unitInput.value} yet - type it in yourself.`;
+}
+
+unitInput.addEventListener("input", loadChannels);
+unitInput.addEventListener("change", loadChannels);
+</script>
 {% endblock %}

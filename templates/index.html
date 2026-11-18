@@ -5,7 +5,7 @@
 <table>
 <tr><th>Date</th><th>Car</th><th>Module</th><th>Channel</th><th>Old → New</th></tr>
 {% for c in changes %}
-<tr {% if c.reverted %}style="opacity:.5; text-decoration:line-through"{% endif %}>
+<tr {% if c.reverted %}class="reverted"{% endif %}>
     <td>{{ c.date }}</td>
     <td>{{ c.car }}</td>
     <td>{{ c.control_unit }}</td>
