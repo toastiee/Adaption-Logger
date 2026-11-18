@@ -6,3 +6,6 @@ __pycache__/
 *.sqlite3
 .DS_Store
 instance/
+
+# keep the BCM reference data so it deploys with the app
+!bcm_coding/bcm_reference.db
