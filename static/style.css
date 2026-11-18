@@ -1,0 +1,48 @@
+/* ===== Theme: change these to restyle the whole site ===== */
+:root {
+    --bg: #111;
+    --text: #eee;
+    --accent: #e2001a;   /* GTI red */
+    --card: #1c1c1c;
+    --border: #333;
+}
+
+/* ===== Layout ===== */
+body {
+    font-family: -apple-system, sans-serif;
+    max-width: 800px;
+    margin: auto;
+    padding: 1rem;
+    background: var(--bg);
+    color: var(--text);
+}
+
+a, button { color: var(--accent); }
+
+/* ===== Tables ===== */
+table { width: 100%; border-collapse: collapse; }
+td, th { border-bottom: 1px solid var(--border); padding: .4rem; text-align: left; }
+
+/* ===== Forms ===== */
+label { display: block; margin-top: .6rem; }
+input, select, textarea {
+    width: 100%;
+    padding: .4rem;
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+/* ===== Reverted rows on the list page ===== */
+.reverted { opacity: .5; text-decoration: line-through; }
+
+/* ===== Hints and the BCM reference box ===== */
+.hint { font-size: .85rem; opacity: .7; margin: .3rem 0; }
+.reference {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: .2rem 1rem .6rem;
+    margin: 1rem 0;
+}
+details summary { cursor: pointer; color: var(--accent); margin: .4rem 0; }
